@@ -60,21 +60,24 @@ function claimUnits(text) {
   return units;
 }
 
-// Texto de la sección de cada marcador: desde su línea hasta el siguiente marcador o título de igual o mayor nivel.
+// Texto de la sección de cada marcador: desde el título bajo el que está (el marcador va en la línea siguiente al título,
+// y una etiqueta en el título vale para la sección) hasta el siguiente marcador o título de igual o mayor nivel.
 function markerSections(text) {
   const lines = text.split(/\r?\n/);
   const out = [];
-  let level = 0;
+  let level = 0, head = -1;
   lines.forEach((line, i) => {
     const h = line.match(/^(#{1,6})\s/);
-    if (h) level = h[1].length;
+    if (h) { level = h[1].length; head = i; }
     for (const m of line.matchAll(MARKER_RE)) {
+      const between = head >= 0 ? lines.slice(head + 1, i) : null;
+      const start = between && between.every((l) => !l.trim() || new RegExp(MARKER_RE.source).test(l)) ? head : i;
       let j = i + 1;
       for (; j < lines.length; j++) {
         const hj = lines[j].match(/^(#{1,6})\s/);
         if ((hj && hj[1].length <= level) || new RegExp(MARKER_RE.source).test(lines[j])) break;
       }
-      out.push({ id: m[1], text: lines.slice(i, j).join('\n') });
+      out.push({ id: m[1], text: lines.slice(start, j).join('\n') });
     }
   });
   return out;
@@ -152,7 +155,7 @@ export function evaluar(root, esperado = {}, { trabajo } = {}) {
   const secs = content.flatMap(([f, t]) => markerSections(t).map((s) => ({ ...s, file: F.rel(f) })))
     .filter((s) => s.id.split('-')[1] !== 'SRC');
   const secOk = secs.filter((s) => TAG_RE.test(strip(s.text)));
-  const secBad = secs.filter((s) => !TAG_RE.test(strip(s.text))).slice(0, 4).map((s) => s.id);
+  const secBad = secs.filter((s) => !TAG_RE.test(strip(s.text))).slice(0, 10).map((s) => `${s.id} (${s.file})`);
   checks.push(check('evidencia.por-concepto', 'evidencia', 2, secs.length ? secOk.length / secs.length : 0,
     `${secOk.length}/${secs.length} secciones de concepto con al menos una etiqueta${secBad.length ? `; sin etiqueta: ${secBad.join(', ')}` : ''}`));
   const primSec = section(sources, /primari|primary/i);

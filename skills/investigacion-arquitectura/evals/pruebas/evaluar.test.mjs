@@ -44,6 +44,21 @@ for (const [nombre, mutar, ids] of mutaciones) {
   });
 }
 
+test('una etiqueta en el título de la sección vale para el concepto del marcador que va debajo', () => {
+  const c = copia();
+  try {
+    const sec = '\n## Ejemplo [P]\n<!-- @HEX-REG-3 -->\n\n| A | B |\n|---|---|\n| x | y |\n';
+    anexar(c.folder, '3-reglas.md', sec);
+    anexar(c.folder, 'INDEX.md', '\n| ID | Concepto (una línea) | Ev. | Uso |\n|---|---|---|---|\n| `HEX-REG-3` | Ejemplo | P | — |\n');
+    assert.equal(chk(evaluar(c.folder), 'evidencia.por-concepto').aprobado, true);
+    // Con un párrafo entre el título y el marcador, el título ya no es el de ese concepto.
+    editar(c.folder, '3-reglas.md', (t) => t.replace('## Ejemplo [P]\n<!-- @HEX-REG-3 -->', '## Ejemplo [P]\n\nTexto previo.\n<!-- @HEX-REG-3 -->'));
+    const r = chk(evaluar(c.folder), 'evidencia.por-concepto');
+    assert.equal(r.aprobado, false);
+    assert.match(r.detalle, /HEX-REG-3/);
+  } finally { c.limpiar(); }
+});
+
 test('un archivo que se declara adaptación no cuenta para la densidad de evidencia', () => {
   const c = copia();
   try {

@@ -1,6 +1,6 @@
 {
   "name": "investigacion-arquitectura",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Crea, actualiza y compara folders de investigación de arquitecturas tecnológicas: fuentes verificadas con etiquetas de evidencia, jerarquía que refleja la arquitectura, INDEX.md para AIs y un validador.",
   "author": {
     "name": "reinnillo"
