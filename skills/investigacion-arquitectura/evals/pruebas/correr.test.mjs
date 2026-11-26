@@ -76,6 +76,21 @@ test('resumen calcula medias por brazo y el delta', () => {
   assert.ok(Math.abs(s.delta_puntuacion - 0.35) < 1e-9);
 });
 
+test('ningún caso aprueba si el agente no hace nada', () => {
+  // --seco prepara el directorio de trabajo y evalúa sin ejecutar al agente: es la ejecución que no entrega nada.
+  const out = mkdtempSync(join(tmpdir(), 'ia-nada-'));
+  try {
+    const r = spawnSync(process.execPath, [join(EVALS, 'correr.mjs'), '--seco', '--sin-base', '--permitir-copia-local', '--salida', out], { encoding: 'utf8' });
+    assert.equal(r.status, 1, `el runner debería terminar en 1: ${r.stdout}${r.stderr}`);
+    const { runs } = JSON.parse(readFileSync(join(out, 'resultado.json'), 'utf8'));
+    assert.ok(runs.length >= 5);
+    for (const run of runs) {
+      assert.equal(run.evaluacion.aprobado, false, `${run.caso} aprueba sin trabajo (puntuación ${run.evaluacion.puntuacion})`);
+      assert.ok(run.evaluacion.criticos_fallidos.length > 0, `${run.caso}: debería fallar una comprobación crítica`);
+    }
+  } finally { rmSync(out, { recursive: true, force: true }); }
+});
+
 test('el pipeline en modo --seco prepara el caso, lo evalúa y escribe el informe', () => {
   const out = mkdtempSync(join(tmpdir(), 'ia-seco-'));
   try {

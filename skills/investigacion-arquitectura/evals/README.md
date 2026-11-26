@@ -38,7 +38,9 @@ el optimizador de descripciones de skill-creator.
 ## Comprobaciones del evaluador
 
 Cada una vale entre 0 y 1 y tiene un peso. La puntuación es la media ponderada; se aprueba con **0,85** y sin ninguna
-comprobación **crítica** fallida.
+comprobación **crítica** fallida. El entregable de cada modo es crítico (el folder en Crear, el concepto nuevo en
+Actualizar, la comparación en Comparar), de modo que **ningún caso aprueba si el agente no hace nada**; una prueba lo
+comprueba para todos los casos.
 
 | Comprobación | Peso | Qué mide |
 |---|---|---|
@@ -72,8 +74,8 @@ comprobación **crítica** fallida.
 | `orden` | Patrones que deben aparecer en este orden en los conceptos del índice | 1 |
 | `persistentes` | Archivos del usuario que no se pueden borrar | 1, crítica |
 | `intactos` | `[{ruta, sha256}]` del sistema comparado que no se pueden modificar | 1, crítica |
-| `ids_preservados`, `ids_nuevos_min` | IDs que deben seguir y cuántos nuevos como mínimo | 2 (crítica) y 1 |
-| `comparacion` | `{archivo, sistema, filas_min, esperados}`: filas con estado, referencias archivo:línea que existen y hallazgos obligatorios | 3 |
+| `ids_preservados`, `ids_nuevos_min` | IDs que deben seguir y cuántos nuevos como mínimo | 2 y 1, las dos críticas |
+| `comparacion` | `{archivo, sistema, filas_min, esperados}`: filas con estado, referencias archivo:línea que existen y hallazgos obligatorios | 3, crítica desde 0,6 |
 | `umbral` | Sustituye al 0,85 | — |
 
 ## Ejecutar

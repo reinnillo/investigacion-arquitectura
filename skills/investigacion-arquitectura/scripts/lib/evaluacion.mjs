@@ -22,9 +22,12 @@ const clamp = (x) => Math.max(0, Math.min(1, x));
 const pct = (x) => `${Math.round(x * 100)} %`;
 const strip = (s) => s.replace(/\*\*/g, '');
 
-function check(id, categoria, peso, valor, detalle, { critico = false } = {}) {
+// `critico`: si falla, el folder no aprueba aunque la puntuación llegue al umbral. `minimo`: valor desde el que una
+// comprobación crítica se da por cumplida (por defecto, entera); sirve para exigir que el entregable exista y tenga
+// sustancia sin tumbar un resultado casi perfecto.
+function check(id, categoria, peso, valor, detalle, { critico = false, minimo = 0.999 } = {}) {
   const v = clamp(valor);
-  return { id, categoria, peso, valor: Math.round(v * 1000) / 1000, aprobado: v >= 0.999, critico, detalle };
+  return { id, categoria, peso, valor: Math.round(v * 1000) / 1000, aprobado: v >= 0.999, critico, minimo, detalle };
 }
 
 // Una unidad de afirmación: un elemento de lista o una tabla entera. Devuelve [{file, n, tagged}].
@@ -241,7 +244,7 @@ export function evaluar(root, esperado = {}, { trabajo } = {}) {
     if (esperado.ids_nuevos_min) {
       const nuevos = [...v.rows.keys()].filter((id) => !esperado.ids_preservados.includes(id));
       checks.push(check('esperado.ids-nuevos', 'esperado', 1, nuevos.length / esperado.ids_nuevos_min,
-        `${nuevos.length} ID(s) nuevo(s) (mínimo ${esperado.ids_nuevos_min}): ${nuevos.join(', ') || '—'}`));
+        `${nuevos.length} ID(s) nuevo(s) (mínimo ${esperado.ids_nuevos_min}): ${nuevos.join(', ') || '—'}`, { critico: true }));
     }
   }
   if (esperado.comparacion) checks.push(comparacion(root, esperado.comparacion, v, trabajo));
@@ -250,7 +253,7 @@ export function evaluar(root, esperado = {}, { trabajo } = {}) {
   function finish() {
     const total = checks.reduce((s, c) => s + c.peso, 0);
     const puntuacion = Math.round((checks.reduce((s, c) => s + c.peso * c.valor, 0) / total) * 1000) / 1000;
-    const criticos = checks.filter((c) => c.critico && !c.aprobado).map((c) => c.id);
+    const criticos = checks.filter((c) => c.critico && c.valor < c.minimo).map((c) => c.id);
     return { puntuacion, umbral, aprobado: puntuacion >= umbral && !criticos.length, criticos_fallidos: criticos, checks, ...base };
   }
 }
@@ -262,7 +265,7 @@ function comparacion(root, spec, v, trabajo) {
     const list = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.md')) : [];
     file = list.length ? join(dir, list[0]) : '';
   }
-  if (!file || !existsSync(file)) return check('esperado.comparacion', 'esperado', 3, 0, 'no se escribió el archivo de comparación');
+  if (!file || !existsSync(file)) return check('esperado.comparacion', 'esperado', 3, 0, 'no se escribió el archivo de comparación', { critico: true, minimo: 0.6 });
   const text = readFileSync(file, 'utf8');
   const sys = resolve(trabajo ?? resolve(root, '..'), spec.sistema ?? '.');
   const rows = tableRows(text).filter((r) => r.cells.some((c) => ESTADOS.has(c.replace(/[`*]/g, '').toUpperCase())));
@@ -289,7 +292,8 @@ function comparacion(root, spec, v, trabajo) {
   const valor = parts.reduce((s, [w, x]) => s + w * x, 0);
   return check('esperado.comparacion', 'esperado', 3, valor,
     `${basename(file)}: ${rows.length} filas con estado (mínimo ${min}), ${idsOk} con ID del índice, ${refOk}/${refs.length} referencias archivo:línea que existen` +
-    (esperados.length ? `; hallazgos esperados ${esperados.length - wrong.length}/${esperados.length}${wrong.length ? ` (fallan: ${wrong.join(', ')})` : ''}` : ''));
+    (esperados.length ? `; hallazgos esperados ${esperados.length - wrong.length}/${esperados.length}${wrong.length ? ` (fallan: ${wrong.join(', ')})` : ''}` : ''),
+    { critico: true, minimo: 0.6 });
 }
 
 export function formatear(r) {
