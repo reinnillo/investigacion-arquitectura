@@ -1,0 +1,31 @@
+{
+  "carpeta": "docs/hexagonal",
+  "idioma": "es",
+  "conceptos": [
+    {
+      "nombre": "puertos",
+      "patron": "puert|\bports?\b"
+    },
+    {
+      "nombre": "adaptadores",
+      "patron": "adaptador|adapter"
+    },
+    {
+      "nombre": "aplicación o núcleo",
+      "patron": "aplicaci[oó]n|n[uú]cleo|\bcore\b|dominio"
+    },
+    {
+      "nombre": "regla de dependencias",
+      "patron": "dependenc"
+    }
+  ],
+  "dominios_primarios": [
+    "alistair.cockburn.us"
+  ],
+  "prohibidos": [
+    {
+      "nombre": "seis puertos como regla",
+      "patron": "(tiene|exige|requiere|siempre)\\s+(exactamente\\s+)?seis\\s+puertos"
+    }
+  ]
+}

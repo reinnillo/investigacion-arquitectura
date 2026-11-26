@@ -1,0 +1,72 @@
+{
+  "carpeta": "investigacion",
+  "ids_preservados": [
+    "HEX-ORI-1",
+    "HEX-TES-1",
+    "HEX-TES-2",
+    "HEX-PRO-0",
+    "HEX-PRO-1",
+    "HEX-ELE-0",
+    "HEX-ELE-1",
+    "HEX-ELE-2",
+    "HEX-ELE-2A",
+    "HEX-ELE-2B",
+    "HEX-ELE-3",
+    "HEX-ELE-3A",
+    "HEX-REG-1",
+    "HEX-REG-2",
+    "HEX-COM-1",
+    "HEX-COM-2",
+    "HEX-SRC-1",
+    "HEX-SRC-2"
+  ],
+  "comparacion": {
+    "archivo": "comparaciones/*.md",
+    "sistema": "tienda",
+    "filas_min": 8,
+    "esperados": [
+      {
+        "id": "HEX-REG-1",
+        "estados": [
+          "FALTA"
+        ]
+      },
+      {
+        "id": "HEX-ELE-3A",
+        "estados": [
+          "FALTA",
+          "PARCIAL"
+        ]
+      },
+      {
+        "id": "HEX-ELE-2B",
+        "estados": [
+          "PARCIAL",
+          "FALTA"
+        ]
+      }
+    ]
+  },
+  "intactos": [
+    {
+      "ruta": "tienda/src/dominio/pedido.js",
+      "sha256": "8440447e6c99d79f85bf517e538776d6a637e711a811b5468aeda168f8836cf6"
+    },
+    {
+      "ruta": "tienda/src/adaptadores/http.js",
+      "sha256": "03c21dd013d7f027541d7e95635212ac9b306ec455fed7234889d705d2edbdd8"
+    },
+    {
+      "ruta": "tienda/src/infra/db.js",
+      "sha256": "7af2a66d491335b8f6756f102934d34e1d41802b7b5484d418e4fdbd0373b17d"
+    },
+    {
+      "ruta": "tienda/src/puertos/repositorio-pedidos.js",
+      "sha256": "d0251602cfe31747d3929164dbfe49950e93263d8b2bdd600aa6939445aad5c5"
+    },
+    {
+      "ruta": "tienda/test/pedido.test.js",
+      "sha256": "2314278abd1372352b1b59aa47cbb7a9d7057761d1af89e9378b995876b14565"
+    }
+  ]
+}

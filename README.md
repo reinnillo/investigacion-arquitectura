@@ -69,25 +69,41 @@ Tres modos:
 | **Actualizar** | Amplía o corrige un folder existente sin renumerar IDs |
 | **Comparar** | Lee sólo `INDEX.md`, busca cada concepto en tu sistema y escribe `comparaciones/<sistema>.md` |
 
-## Validador
+## Validación y evaluación
 
 ```bash
-node skills/investigacion-arquitectura/scripts/validar.mjs <folder>          # comprueba
-node skills/investigacion-arquitectura/scripts/validar.mjs <folder> --map    # ID → archivo:línea
-node skills/investigacion-arquitectura/scripts/validar.mjs <folder> --json   # salida para máquinas
+S=skills/investigacion-arquitectura/scripts
+node $S/validar.mjs <folder>          # estructura: IDs, marcadores, índice, enlaces, árbol, fuentes
+node $S/validar.mjs <folder> --map    # ID → archivo:línea
+node $S/evaluar.mjs <folder>          # calidad de 0 a 1; aprueba con 0,85 y sin fallos críticos
 ```
 
-Comprueba que:
+- **`validar.mjs`** comprueba que cada ID del índice tiene exactamente un marcador y cada marcador su fila; que hay un solo
+  prefijo; que la evidencia, las celdas y las columnas del índice son válidas; que los enlaces y anclas existen; que el árbol
+  del README coincide con los archivos; y que `fuentes.md` tiene URLs y descartadas.
+- **`evaluar.mjs`** parte de esa validación y mide la calidad: densidad de etiquetas de evidencia, secciones de concepto sin
+  etiqueta, fuentes primarias, fechas, citas, descartadas, granularidad y comparabilidad del índice, profundidad, nombres y
+  relleno. Cada comprobación fallida dice dónde mirar.
 
-- cada ID del índice tiene exactamente un marcador y cada marcador su fila;
-- hay un solo prefijo y las áreas están declaradas;
-- la evidencia del índice es válida, no hay celdas vacías y las columnas cuadran;
-- los enlaces relativos y sus anclas existen;
-- el árbol del README coincide con los archivos reales;
-- `fuentes.md` tiene URLs y sección de descartadas.
+El skill ejecuta los dos antes de entregar un folder. Ninguno juzga si lo escrito es verdad: eso lo cubren el procedimiento
+de investigación del skill y el juez semántico de las evals.
 
-Termina con código 1 si hay errores. No juzga si lo escrito es verdad; eso lo garantiza el procedimiento de investigación
-del skill.
+## Evals
+
+El skill trae su propio sistema de evals en
+[skills/investigacion-arquitectura/evals/](skills/investigacion-arquitectura/evals/README.md):
+
+| Capa | Qué comprueba | Cómo |
+|---|---|---|
+| Pruebas del evaluador | Que cada comprobación detecta la clase de fallo que vigila (40 pruebas) | `node --test skills/investigacion-arquitectura/evals/pruebas/*.test.mjs` |
+| Evaluador determinista | La calidad medible de un folder y las expectativas de cada caso | `evaluar.mjs <folder> --esperado <caso>/esperado.json` |
+| Runner | El skill de punta a punta, con y sin skill, con puntuación, coste y delta | `node skills/investigacion-arquitectura/evals/correr.mjs` |
+| Juez semántico | Lo que un script no ve: descartes correctos, prioridades con sentido | `correr.mjs --juez` |
+
+Cinco casos cubren los tres modos: un patrón (hexagonal), un producto con el pedido en inglés (Kubernetes), un borrador con
+datos falsos que hay que descartar (12-factor), añadir un concepto sin romper IDs, y comparar un sistema con violaciones
+deliberadas sin tocar su código. Los mismos casos funcionan con `claude plugin eval . --allow-tools
+Write,Edit,Bash,WebSearch,WebFetch --scaffold`. Las ejecuciones reales tienen coste.
 
 ## Estructura del repo
 
@@ -101,28 +117,21 @@ skills/investigacion-arquitectura/
 │   ├── estructura.md        ← cómo derivar la jerarquía, arquetipos, IDs
 │   ├── evidencia.md         ← etiquetas, verificación, cifras, fallos habituales
 │   └── plantillas.md        ← README, INDEX, fuentes, áreas, conceptos, comparación
-└── scripts/validar.mjs
-evals/                       ← casos de prueba para `claude plugin eval`
+├── scripts/
+│   ├── validar.mjs          ← validador estructural
+│   ├── evaluar.mjs          ← evaluador de calidad
+│   └── lib/                 ← validacion.mjs y evaluacion.mjs, la única fuente de las reglas
+└── evals/                   ← casos, fixtures, runner, pruebas, disparo.json
 ```
-
-## Pruebas
-
-`evals/` tiene tres casos: un patrón (hexagonal), un producto con el pedido en inglés (control plane de Kubernetes) y un
-borrador con datos falsos que hay que descartar (12-factor). Con Claude Code:
-
-```bash
-claude plugin eval . --allow-tools Write,Edit,Bash,WebSearch,WebFetch --scaffold
-```
-
-Son ejecuciones reales de modelo con búsqueda web, con y sin el skill: tienen coste.
 
 ## English
 
 A Claude skill that researches a technology architecture (a person's or team's practice, a pattern, a product or a
 framework) from real sources and turns it into a Markdown folder whose tree mirrors the architecture. Every claim carries
 an evidence tag, unsupported claims are listed as discarded, and an AI-friendly `INDEX.md` with stable, greppable IDs and
-comparison questions lets you compare your own system against it. It writes in the user's language and ships with a
-validator (`scripts/validar.mjs`). Install with `/plugin marketplace add reinnillo/investigacion-arquitectura`.
+comparison questions lets you compare your own system against it. It writes in the user's language, ships with a
+validator and a quality evaluator it runs on its own output, and has its own eval suite (cases for its three modes, a
+runner that compares runs with and without the skill, and tests for the evaluator). Install with `/plugin marketplace add reinnillo/investigacion-arquitectura`.
 
 ## Licencia
 

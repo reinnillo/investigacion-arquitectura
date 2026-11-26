@@ -1,0 +1,34 @@
+{
+  "carpeta": "investigacion",
+  "idioma": "es",
+  "ids_preservados": [
+    "HEX-ORI-1",
+    "HEX-TES-1",
+    "HEX-TES-2",
+    "HEX-PRO-0",
+    "HEX-PRO-1",
+    "HEX-ELE-0",
+    "HEX-ELE-1",
+    "HEX-ELE-2",
+    "HEX-ELE-2A",
+    "HEX-ELE-2B",
+    "HEX-ELE-3",
+    "HEX-ELE-3A",
+    "HEX-REG-1",
+    "HEX-REG-2",
+    "HEX-COM-1",
+    "HEX-COM-2",
+    "HEX-SRC-1",
+    "HEX-SRC-2"
+  ],
+  "ids_nuevos_min": 1,
+  "conceptos": [
+    {
+      "nombre": "configuración de adaptadores al arrancar",
+      "patron": "configur|arranque|composici[oó]n|cablead|wiring"
+    }
+  ],
+  "dominios_primarios": [
+    "alistair.cockburn.us"
+  ]
+}

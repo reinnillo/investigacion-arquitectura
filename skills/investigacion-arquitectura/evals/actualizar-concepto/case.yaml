@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: actualizar-concepto
+expected_outcome: |
+  El folder investigacion/ conserva sus 18 IDs sin renumerar y añade al menos un concepto nuevo sobre la configuración de adaptadores en el arranque, con marcador, fila en el índice, fuente y etiqueta de evidencia; el árbol del README y la fecha se actualizan y el validador queda en verde.
+context:
+  scaffold_script: place-files.sh

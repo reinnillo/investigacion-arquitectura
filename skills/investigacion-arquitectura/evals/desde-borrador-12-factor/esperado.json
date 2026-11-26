@@ -1,0 +1,56 @@
+{
+  "carpeta": "investigacion-12-factor",
+  "idioma": "es",
+  "dominios_primarios": [
+    "12factor.net"
+  ],
+  "orden": [
+    "codebase|c[oó]digo base",
+    "dependenc",
+    "config",
+    "backing|servicios de (respaldo|apoyo)|recursos adjuntos",
+    "build|construir|compilaci",
+    "procesos",
+    "port binding|puertos",
+    "concurren",
+    "disposab|desechab",
+    "paridad|parity",
+    "\blogs?\b|registros",
+    "admin"
+  ],
+  "descartes": [
+    {
+      "nombre": "publicada por Google en 2015",
+      "patron": "google"
+    },
+    {
+      "nombre": "15 factores",
+      "patron": "\b15\b"
+    },
+    {
+      "nombre": "Prometheus obligatorio",
+      "patron": "prometheus"
+    },
+    {
+      "nombre": "garantiza escalar sin cambios",
+      "patron": "garantiz"
+    }
+  ],
+  "prohibidos": [
+    {
+      "nombre": "Google la publicó",
+      "patron": "(publicad[ao]|cread[ao]|escrit[ao]|definid[ao])\\s+por\\s+google"
+    },
+    {
+      "nombre": "son 15 factores",
+      "patron": "\b(tiene|son|consta de)\\s+15\\s+factores"
+    },
+    {
+      "nombre": "Prometheus obligatorio",
+      "patron": "prometheus\\s+obligatori"
+    }
+  ],
+  "persistentes": [
+    "borrador-12-factor.md"
+  ]
+}

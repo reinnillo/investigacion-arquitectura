@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+# Prepara el directorio de trabajo del caso. Lo usan correr.mjs y `claude plugin eval --scaffold`.
 set -eu
-cp -R "$(dirname "$0")/files/." .
+cp -R "$(cd "$(dirname "$0")" && pwd)/files/." .

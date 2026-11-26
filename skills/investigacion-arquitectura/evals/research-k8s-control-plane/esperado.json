@@ -1,0 +1,35 @@
+{
+  "carpeta": "research/k8s-control-plane",
+  "idioma": "en",
+  "conceptos": [
+    {
+      "nombre": "kube-apiserver",
+      "patron": "api-?server"
+    },
+    {
+      "nombre": "etcd",
+      "patron": "etcd"
+    },
+    {
+      "nombre": "kube-scheduler",
+      "patron": "scheduler"
+    },
+    {
+      "nombre": "kube-controller-manager",
+      "patron": "controller"
+    },
+    {
+      "nombre": "reconciliation",
+      "patron": "reconcil|desired state"
+    }
+  ],
+  "dominios_primarios": [
+    "kubernetes.io"
+  ],
+  "prohibidos": [
+    {
+      "nombre": "the scheduler starts containers",
+      "patron": "scheduler\\s+(starts|runs|launches)\\s+(the\\s+)?(containers|pods)"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: comparar-sistema
+expected_outcome: |
+  Un archivo comparaciones/<sistema>.md dentro de investigacion/ con una fila por concepto comparable, estados TIENE/PARCIAL/FALTA/N/A y evidencia archivo:línea real del sistema; detecta que la lógica importa la base de datos (HEX-REG-1 FALTA), que el puerto no tiene implementación y que los tests usan el archivo real; prioriza HEX-REG-1; no modifica el código de tienda/.
+context:
+  scaffold_script: place-files.sh

@@ -37,7 +37,11 @@ Léelas cuando llegues al paso que las usa, no antes:
   citas, fallos habituales y cómo buscar rápido. **Pasos 2 y 4.**
 - [references/plantillas.md](references/plantillas.md): plantillas de README, INDEX, fuentes, áreas, conceptos y
   comparación. **Pasos 4 y 5.**
-- `scripts/validar.mjs`: el validador (Node ≥ 18, sin dependencias). **Pasos 5 y 6.**
+- `scripts/validar.mjs` y `scripts/evaluar.mjs`: el validador estructural y el evaluador de calidad (Node ≥ 18, sin
+  dependencias). **Pasos 5 y 6.**
+- `evals/`: el sistema de evals del propio skill (casos, fixtures, runner y pruebas). No lo necesitas para usar el skill;
+  léelo sólo si te piden evaluarlo o mejorarlo: `evals/README.md` (está en el repo; el zip para Claude.ai no lo
+  incluye).
 
 ## Modo Crear
 
@@ -113,35 +117,49 @@ Es la pieza que hace el folder útil sin leerlo entero; dale el mismo cuidado qu
 Usa `node <skill>/scripts/validar.mjs <folder> --map` para obtener la lista de ID → archivo:línea en lugar de recorrer los
 archivos a mano.
 
-### 6. Validar
+### 6. Validar y evaluar
+
+Primero la estructura, después la calidad:
 
 ```bash
 node <ruta-del-skill>/scripts/validar.mjs <folder>
+node <ruta-del-skill>/scripts/evaluar.mjs <folder>
 ```
 
-El script comprueba que:
+`validar.mjs` comprueba que:
 
 - cada ID del índice tiene exactamente un marcador en el folder, y cada marcador su fila;
 - hay un solo prefijo y cada área figura en la tabla de áreas;
 - la evidencia del índice es válida, no hay celdas vacías y las columnas cuadran;
 - los enlaces relativos y sus anclas existen;
 - el árbol de `README.md` coincide con los archivos reales;
-- `fuentes.md` tiene URLs y sección de descartadas;
-- cada archivo tiene marcadores y etiquetas de evidencia.
+- `fuentes.md` tiene URLs y sección de descartadas.
 
-Corrige sólo lo que reporte y vuelve a ejecutarlo hasta que salga `✓ válido`. Los avisos se revisan uno a uno: o se
-corrigen, o se justifican en el informe final. Si el script se equivoca, dilo en el informe; no cambies el folder para
-complacer a un falso positivo.
+`evaluar.mjs` parte de esa validación y puntúa la calidad de 0 a 1:
 
-El script no puede juzgar la verdad de lo escrito. Antes de terminar, relee la tabla de descartadas y la columna «Ev.» del
-índice preguntándote, por cada fila **P**: ¿lo leí yo en el primario?
+- **evidencia:** densidad de etiquetas por afirmación, secciones de concepto sin etiqueta, fuentes primarias, fechas,
+  citas cortas, descartadas;
+- **índice:** granularidad, secciones del protocolo, conceptos comparables, la arquitectura en 6–10 líneas;
+- **estructura y contenido:** profundidad, nombres, aviso para AIs, relleno sin sustituir.
+
+Aprueba con 0,85 y sin comprobaciones críticas fallidas. Es el mismo evaluador que usan las evals del skill: lo que apruebe
+aquí es lo que se mide allí.
+
+Corrige sólo lo que reporten y vuelve a ejecutarlos hasta que salgan `✓ válido` y `✓ APROBADO`. Cada comprobación fallida
+dice dónde mirar (archivo:línea o ID). Los avisos y las comprobaciones por debajo de 1 se revisan una a una: o se corrigen,
+o se justifican en el informe final. Si un script se equivoca, dilo en el informe; no cambies el folder para complacer a un
+falso positivo, y nunca quites una etiqueta de evidencia o una afirmación descartada para subir la nota.
+
+Los scripts no pueden juzgar la verdad de lo escrito. Antes de terminar, relee la tabla de descartadas y la columna «Ev.»
+del índice preguntándote, por cada fila **P**: ¿lo leí yo en el primario?
 
 ### 7. Informar
 
 Responde al usuario con:
 
 - la ruta y el árbol de primer y segundo nivel;
-- cifras: IDs, fuentes primarias y secundarias, afirmaciones descartadas, resultado del validador;
+- cifras: IDs, fuentes primarias y secundarias, afirmaciones descartadas, resultado del validador y puntuación del
+  evaluador (con las comprobaciones que no llegaron a 1 y por qué);
 - qué no se pudo verificar y por qué;
 - el siguiente paso útil, normalmente comparar un sistema concreto con el folder.
 
@@ -153,8 +171,8 @@ Responde al usuario con:
 3. Edita en el sitio. Los IDs no se renumeran ni se reutilizan: los nuevos continúan la numeración de su área; un concepto
    retirado pierde su marcador y su fila. Si un cambio altera la estructura, actualiza el árbol del README y la tabla de
    áreas.
-4. Actualiza la fecha de `README.md` y de `fuentes.md`. Valida e informa como en los pasos 6 y 7, diciendo qué IDs se
-   añadieron, cambiaron o retiraron.
+4. Actualiza la fecha de `README.md` y de `fuentes.md`. Valida, evalúa e informa como en los pasos 6 y 7, diciendo qué
+   IDs se añadieron, cambiaron o retiraron.
 
 ## Modo Comparar
 

@@ -1,10 +1,22 @@
 {
   "name": "investigacion-arquitectura",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Crea, actualiza y compara folders de investigación de arquitecturas tecnológicas: fuentes verificadas con etiquetas de evidencia, jerarquía que refleja la arquitectura, INDEX.md para AIs y un validador.",
-  "author": { "name": "reinnillo" },
+  "author": {
+    "name": "reinnillo"
+  },
   "homepage": "https://github.com/reinnillo/investigacion-arquitectura",
   "repository": "https://github.com/reinnillo/investigacion-arquitectura",
   "license": "MIT",
-  "keywords": ["architecture", "research", "arquitectura", "investigacion", "skill", "ai-index"]
+  "keywords": [
+    "architecture",
+    "research",
+    "arquitectura",
+    "investigacion",
+    "skill",
+    "ai-index"
+  ],
+  "experimental": {
+    "evals": "skills/investigacion-arquitectura/evals"
+  }
 }

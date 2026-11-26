@@ -1,0 +1,20 @@
+[
+  {"query": "quiero entender a fondo como organiza el codigo de agentes Lauren Tan, investigalo y armame algo que despues pueda comparar con mi harness", "should_trigger": true},
+  {"query": "investiga la arquitectura de Kafka (brokers, particiones, réplicas, controller) con la doc oficial y déjamelo en docs/kafka/ bien organizado para que otra IA lo pueda usar", "should_trigger": true},
+  {"query": "tengo un md viejo en notas/cqrs.md sobre CQRS y event sourcing, no me fio de varias cosas que dice, verificalo contra fuentes y conviertelo en algo serio", "should_trigger": true},
+  {"query": "compara nuestro backend en services/orders con la investigacion de arquitectura hexagonal que tenemos en investigacion/ y dime qué nos falta por prioridad", "should_trigger": true},
+  {"query": "can you research the AWS Well-Architected Framework pillars and build me a knowledge base folder my team's AI can grep to audit our infra against it?", "should_trigger": true},
+  {"query": "añade al folder investigacion/ lo que Lauren Tan dijo en su ultimo podcast sobre revisión humana, con fuentes, sin romper los IDs", "should_trigger": true},
+  {"query": "necesito documentar la arquitectura de microservicios que Uber publicó en su blog de ingeniería, con fuentes reales y separando lo que es de ellos de lo que es opinión", "should_trigger": true},
+  {"query": "desglosa el modelo C4 de Simon Brown en carpetas por nivel, verificado, que lo quiero pasar a un amigo junto con su IA", "should_trigger": true},
+  {"query": "arma una investigación verificable del control plane de Kubernetes para comparar contra nuestro orquestador interno", "should_trigger": true},
+  {"query": "dibujame un diagrama C4 de contexto y contenedores para mi app de pedidos en Mermaid", "should_trigger": false},
+  {"query": "refactoriza src/orders para que siga arquitectura hexagonal: separa puertos y adaptadores y mueve la lógica al dominio", "should_trigger": false},
+  {"query": "escribe un ADR para decidir si migramos de REST a gRPC entre los servicios de pagos y facturación", "should_trigger": false},
+  {"query": "explícame en dos párrafos qué es event sourcing y en qué se diferencia de CQRS", "should_trigger": false},
+  {"query": "revisa este PR que mueve el cliente de base de datos a un adaptador y dime si rompe algo", "should_trigger": false},
+  {"query": "hazme un resumen de la charla de Lauren Tan para postearlo en LinkedIn, tono cercano, 150 palabras", "should_trigger": false},
+  {"query": "genera el README de mi repo describiendo su arquitectura de carpetas actual", "should_trigger": false},
+  {"query": "busca en internet cuánto cuesta un cluster de Kubernetes administrado en GKE frente a EKS para 10 nodos", "should_trigger": false},
+  {"query": "audita la seguridad de nuestra infraestructura en terraform/ y dame los hallazgos por severidad", "should_trigger": false}
+]
