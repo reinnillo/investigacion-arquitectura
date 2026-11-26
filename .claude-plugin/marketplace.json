@@ -1,0 +1,15 @@
+{
+  "name": "reinnillo",
+  "description": "Skills de reinnillo para Claude Code.",
+  "owner": {
+    "name": "reinnillo"
+  },
+  "plugins": [
+    {
+      "name": "investigacion-arquitectura",
+      "source": "./",
+      "description": "Folders de investigación de arquitecturas tecnológicas, verificados y con índice para AIs.",
+      "version": "1.0.0"
+    }
+  ]
+}

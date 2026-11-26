@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: desde-borrador-12-factor
+expected_outcome: |
+  Un folder investigacion-12-factor/ con doce factores (uno por concepto, numerados como en 12factor.net), la fuente primaria 12factor.net, y una tabla de descartadas con las afirmaciones falsas del borrador: que lo publicó Google en 2015, que son 15 factores, que la observabilidad con Prometheus es un factor y que garantiza escalar sin cambios. El borrador no se borra.
+context:
+  scaffold_script: place-files.sh

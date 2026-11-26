@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: research-k8s-control-plane
+expected_outcome: |
+  An English-language folder research/k8s-control-plane/ whose tree follows the components named in the official Kubernetes docs, with kubernetes.io as primary source, a stable-ID INDEX.md with comparison questions, and a passing validator.

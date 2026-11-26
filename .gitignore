@@ -1,0 +1,5 @@
+node_modules/
+evals/results/
+*.skill
+*.zip
+.DS_Store

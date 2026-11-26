@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: patron-hexagonal
+expected_outcome: |
+  Un folder docs/hexagonal/ con README, INDEX y fuentes, cuya jerarquía refleja los elementos del patrón (aplicación, puertos, adaptadores, reglas de dependencia), con el artículo de Cockburn como fuente primaria, cada afirmación etiquetada y el validador en verde.
